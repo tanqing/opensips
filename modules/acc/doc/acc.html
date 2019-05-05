@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Acc Module</title><link rel="stylesheet" type="text/css" href="../../../doc/module-docbook.css" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /></head><body><div class="book"><div class="titlepage"><div><div><h1 class="title"><a id="idm45201523736720"></a>Acc Module</h1></div><div><div class="authorgroup"><div class="author"><h3 class="author"><span class="firstname">Jiri</span> <span class="surname">Kuthan</span></h3></div><div class="author"><h3 class="author"><span class="firstname">Bogdan-Andrei</span> <span class="surname">Iancu</span></h3></div><div class="author"><h3 class="author"><span class="firstname">Ramona-Elena</span> <span class="surname">Modroiu</span></h3></div><div class="editor"><h4 class="editedby">Edited by</h4><h3 class="editor"><span class="firstname">Bogdan-Andrei</span> <span class="surname">Iancu</span></h3></div><div class="editor"><h3 class="editor"><span class="firstname">Irina-Maria</span> <span class="surname">Stanescu</span></h3></div></div></div><div><p class="copyright">Copyright © 2002-2003, 2003 FhG FOKUS</p></div><div><p class="copyright">Copyright © 2004-2009 Voice Sistem SRL</p></div><div><p class="copyright">Copyright © 2009-2013 OpenSIPS Solutions</p></div><div><div class="revhistory"><table style="border-style:solid; width:100%;" summary="Revision History"><tr><th align="left" valign="top" colspan="2"><strong>Revision History</strong></th></tr><tr><td align="left">Revision $Revision: 8740 $</td><td align="left">$Date$</td></tr></table></div></div></div><hr /></div><div class="toc"><p><strong>Table of Contents</strong></p><dl class="toc"><dt><span class="chapter"><a href="#idm45201526749344">1. Admin Guide</a></span></dt><dd><dl><dt><span class="section"><a href="#overview">1.1. Overview</a></span></dt><dd><dl><dt><span class="section"><a href="#idm45201528274784">1.1.1. General Example</a></span></dt></dl></dd><dt><span class="section"><a href="#ACC-extra-id">1.2. Extra accounting</a></span></dt><dd><dl><dt><span class="section"><a href="#overview_extra">1.2.1. Overview</a></span></dt><dt><span class="section"><a href="#idm45201528269920">1.2.2. Definitions and syntax</a></span></dt><dt><span class="section"><a href="#idm45201522895344">1.2.3. How it works</a></span></dt><dt><span class="section"><a href="#idm45201522892704">1.2.4. Radius accounting dependencies</a></span></dt></dl></dd><dt><span class="section"><a href="#multi-call-legs">1.3. Multi Call-Legs accounting</a></span></dt><dd><dl><dt><span class="section"><a href="#overview_multi_call_legs">1.3.1. Overview</a></span></dt><dt><span class="section"><a href="#idm45201522886976">1.3.2. Configuration</a></span></dt><dt><span class="section"><a href="#idm45201522883392">1.3.3. Logged data</a></span></dt></dl></dd><dt><span class="section"><a href="#ACC-cdr-id">1.4. CDRs accounting</a></span></dt><dd><dl><dt><span class="section"><a href="#overview_cdr_accounting">1.4.1. Overview</a></span></dt><dt><span class="section"><a href="#idm45201522871824">1.4.2. Configuration</a></span></dt><dt><span class="section"><a href="#idm45201522869632">1.4.3. How it works</a></span></dt></dl></dd><dt><span class="section"><a href="#dependencies">1.5. Dependencies</a></span></dt><dd><dl><dt><span class="section"><a href="#idm45201522866720">1.5.1. OpenSIPS Modules</a></span></dt><dt><span class="section"><a href="#idm45201522859280">1.5.2. External Libraries or Applications</a></span></dt></dl></dd><dt><span class="section"><a href="#exported_parameters">1.6. Exported Parameters</a></span></dt><dd><dl><dt><span class="section"><a href="#param_early_media">1.6.1. <code class="varname">early_media</code> (integer)</a></span></dt><dt><span class="section"><a href="#param_report_cancels">1.6.2. <code class="varname">report_cancels</code> (integer)</a></span></dt><dt><span class="section"><a href="#param_detect_direction">1.6.3. <code class="varname">detect_direction</code> (integer)</a></span></dt><dt><span class="section"><a href="#param_extra_fields">1.6.4. <code class="varname">extra_fields</code> (string)</a></span></dt><dt><span class="section"><a href="#param_leg_fields">1.6.5. <code class="varname">leg_fields</code> (string)</a></span></dt><dt><span class="section"><a href="#param_log_level">1.6.6. <code class="varname">log_level</code> (integer)</a></span></dt><dt><span class="section"><a href="#param_log_facility">1.6.7. <code class="varname">log_facility</code> (string)</a></span></dt><dt><span class="section"><a href="#param_aaa_url">1.6.8. <code class="varname">aaa_url</code> (string)</a></span></dt><dt><span class="section"><a href="#param_service_type">1.6.9. <code class="varname">service_type</code> (integer)</a></span></dt><dt><span class="section"><a href="#param_db_table_acc">1.6.10. <code class="varname">db_table_acc</code> (string)</a></span></dt><dt><span class="section"><a href="#param_db_table_missed_calls">1.6.11. <code class="varname">db_table_missed_calls</code> (string)</a></span></dt><dt><span class="section"><a href="#param_db_url">1.6.12. <code class="varname">db_url</code> (string)</a></span></dt><dt><span class="section"><a href="#param_acc_method_column">1.6.13. <code class="varname">acc_method_column</code> (string)</a></span></dt><dt><span class="section"><a href="#param_acc_from_tag_column">1.6.14. <code class="varname">acc_from_tag_column</code> (string)</a></span></dt><dt><span class="section"><a href="#param_acc_to_tag_column">1.6.15. <code class="varname">acc_to_tag_column</code> (string)</a></span></dt><dt><span class="section"><a href="#param_acc_callid_column">1.6.16. <code class="varname">acc_callid_column</code> (string)</a></span></dt><dt><span class="section"><a href="#param_acc_sip_code_column">1.6.17. <code class="varname">acc_sip_code_column</code> (string)</a></span></dt><dt><span class="section"><a href="#param_acc_sip_reason_column">1.6.18. <code class="varname">acc_sip_reason_column</code> (string)</a></span></dt><dt><span class="section"><a href="#param_acc_time_column">1.6.19. <code class="varname">acc_time_column</code> (string)</a></span></dt><dt><span class="section"><a href="#param_acc_created_avp_name">1.6.20. <code class="varname">acc_created_avp_name</code> (string)</a></span></dt></dl></dd><dt><span class="section"><a href="#exported_pseudo_variables">1.7. Exported Pseudo-Variables</a></span></dt><dd><dl><dt><span class="section"><a href="#pv_acc_extra">1.7.1. $acc_extra(tag_name)</a></span></dt><dt><span class="section"><a href="#pv_acc_leg">1.7.2. $(acc_leg(tag_name)[leg_index])</a></span></dt><dt><span class="section"><a href="#pv_acc_current_leg">1.7.3. $acc_current_leg (read-only)</a></span></dt></dl></dd><dt><span class="section"><a href="#exported_functions">1.8. Exported Functions</a></span></dt><dd><dl><dt><span class="section"><a href="#func_do_accounting">1.8.1. 
+			<code class="function">do_accounting(type, flags, table)</code>
+		</a></span></dt><dt><span class="section"><a href="#func_drop_accounting">1.8.2. 
+			<code class="function">drop_accounting([type], [flags])</code>
+		</a></span></dt><dt><span class="section"><a href="#func_acc_log_request">1.8.3. 
+			<code class="function">acc_log_request(comment)</code>
+		</a></span></dt><dt><span class="section"><a href="#func_acc_db_request">1.8.4. 
+			<code class="function">acc_db_request(comment, table)</code>
+		</a></span></dt><dt><span class="section"><a href="#func_acc_aaa_request">1.8.5. 
+			<code class="function">acc_aaa_request(comment)</code>
+		</a></span></dt><dt><span class="section"><a href="#func_acc_evi_request">1.8.6. 
+			<code class="function">acc_evi_request(comment)</code>
+		</a></span></dt></dl></dd><dt><span class="section"><a href="#func_acc_new_leg">1.9. 
+			<code class="function">acc_new_leg()</code>
+		</a></span></dt><dt><span class="section"><a href="#exported_events">1.10. Exported Events</a></span></dt><dd><dl><dt><span class="section"><a href="#event_E_ACC_CDR">1.10.1. 
+		<code class="function">E_ACC_CDR</code>
+		</a></span></dt><dt><span class="section"><a href="#event_E_ACC_EVENT">1.10.2. 
+		<code class="function">E_ACC_EVENT</code>
+		</a></span></dt><dt><span class="section"><a href="#event_E_ACC_MISSED_EVENT">1.10.3. 
+		<code class="function">E_ACC_MISSED_EVENT</code>
+		</a></span></dt></dl></dd></dl></dd><dt><span class="chapter"><a href="#idm45201522372080">2. Frequently Asked Questions</a></span></dt></dl></div><div class="list-of-examples"><p><strong>List of Examples</strong></p><dl><dt>1.1. <a href="#idm45201522853104">early_media example</a></dt><dt>1.2. <a href="#idm45201522849440">report_cancels example</a></dt><dt>1.3. <a href="#idm45201522844992">detect_direction example</a></dt><dt>1.4. <a href="#idm45201522840192">Setting <span class="emphasis"><em>extra_fields</em></span> example:</a></dt><dt>1.5. <a href="#idm45201522834224">Setting <span class="emphasis"><em>leg_fields</em></span> example:</a></dt><dt>1.6. <a href="#idm45201522829296">log_level example</a></dt><dt>1.7. <a href="#idm45201522825376">log_facility example</a></dt><dt>1.8. <a href="#idm45201522820448">Set <code class="varname">aaa_url</code> parameter</a></dt><dt>1.9. <a href="#idm45201522816304">service_type example</a></dt><dt>1.10. <a href="#idm45201522811824">db_table_acc example</a></dt><dt>1.11. <a href="#idm45201522807696">db_table_missed_calls example</a></dt><dt>1.12. <a href="#idm45201522803440">db_url example</a></dt><dt>1.13. <a href="#idm45201522799216">acc_method_column example</a></dt><dt>1.14. <a href="#idm45201522795072">acc_from_tag_column example</a></dt><dt>1.15. <a href="#idm45201522790928">acc_to_tag_column example</a></dt><dt>1.16. <a href="#idm45201522786784">acc_callid_column example</a></dt><dt>1.17. <a href="#idm45201522782624">acc_sip_code_column example</a></dt><dt>1.18. <a href="#idm45201522778480">acc_sip_reason_column example</a></dt><dt>1.19. <a href="#idm45201522774224">acc_time_column example</a></dt><dt>1.20. <a href="#idm45201522770400">acc_created_avp_name example</a></dt><dt>1.21. <a href="#idm45201522741136">do_accounting usage</a></dt><dt>1.22. <a href="#idm45201522724640">drop_accounting usage</a></dt><dt>1.23. <a href="#idm45201522717120">acc_log_request usage</a></dt><dt>1.24. <a href="#idm45201522708288">acc_db_request usage</a></dt><dt>1.25. <a href="#idm45201522700448">acc_aaa_request usage</a></dt><dt>1.26. <a href="#idm45201522691536">acc_evi_request usage</a></dt><dt>1.27. <a href="#idm45201522686688">acc_new_leg usage</a></dt></dl></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="idm45201526749344"></a>Chapter 1. Admin Guide</h1></div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="overview"></a>1.1. Overview</h2></div></div></div><p>
+		The ACC module is used to account transaction information to different
+		backends such as syslog, <abbr class="abbrev">SQL</abbr>,
+		<acronym class="acronym">AAA</acronym>.
+	</p><p>
+		To account a transaction and to choose which set of backends to be
+		used, the script writer only has to mark the transaction for
+		accounting by using the <a class="xref" href="#func_do_accounting" title="1.8.1.  do_accounting(type, flags, table)">do_accounting()</a> script function.
+		Note that the function is not actually doing the accounting at that
+		very time, it is just setting a marker - the actual accounting
+		will be done later when the transaction or dialog will be
+		completed.
+		</p><p>
+		Even so, the module allows the script writer to force accounting on the
+		spot in special cases via some other script functions.
+	</p><p>
+		The accounting module will log by default a fixed set of attributes
+		for the transaction - if you customize your accounting by adding more
+		information to be logged, please see the next chapter about extra
+		accounting - <a class="xref" href="#ACC-extra-id" title="1.2. Extra accounting">Section 1.2, “Extra accounting”</a>.
+	</p><p>
+		The fixed minimal accounting information is:
+		</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>Request Method name</p></li><li class="listitem"><p>From header TAG parameter</p></li><li class="listitem"><p>To header TAG parameter</p></li><li class="listitem"><p>Call-Id</p></li><li class="listitem"><p>3-digit Status code from final reply</p></li><li class="listitem"><p>Reason phrase from final reply</p></li><li class="listitem"><p>Timestamp when transaction was completed</p></li></ul></div><p>
+		If a value is not present in the request, the empty string is accounted
+		instead.
+	</p><p>
+		Note that:
+		</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+			A single INVITE may produce multiple accounting reports -- that's
+			most likely due to the SIP forking feature.
+			</p></li><li class="listitem"><p>
+			Since version 2.2, all flags used for accounting have been replaced
+			with the do_accounting() function. No need to worry anymore whether
+			you have set the flags or not, or be confused by various flag names,
+			now you only have to call the function and it will do all the work
+			for you.
+			</p></li><li class="listitem"><p>
+			OpenSIPS now supports session/dialog accounting. It can
+			automatically correlate INVITEs with BYEs for generating proper CDRs,
+			for example for billing purposes.
+			</p></li><li class="listitem"><p>
+			If a UA fails in the middle of a conversation, a proxy will never
+			find out about it. In general, a better practice is to account from an
+			end-device (such as PSTN gateway), which best knows about call
+			status (including media status and PSTN status in case of the
+			gateway).
+			</p></li></ul></div><p>
+	</p><p>
+		The SQL, Event Interface and AAA backend support are compiled in the
+		module.
+        </p><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm45201528274784"></a>1.1.1. General Example</h3></div></div></div><pre class="programlisting">
+loadmodule "modules/acc/acc.so"
+
+if ($ru=~"sip:+40") /* calls to Romania */ {
+    if (!proxy_authorize("sip_domain.net" /* realm */,
+    "subscriber" /* table name */))  {
+        proxy_challenge("sip_domain.net" /* realm */, "0" /* no qop */ );
+        exit;
+    }
+
+    if (is_method("INVITE") &amp;&amp; !db_check_from()) {
+        xlog("FROM URI != digest username\n");
+        sl_send_reply("403","Forbidden");
+    }
+
+    do_accounting("log"); /* set for accounting via syslog */
+    t_relay(); /* enter stateful mode now */
+};
+</pre></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="ACC-extra-id"></a>1.2. Extra accounting</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="overview_extra"></a>1.2.1. Overview</h3></div></div></div><p>
+			Along the static default information, the ACC module
+			allows dynamic selection of extra information to be logged using
+			the acc_extra pseudovariable. This allows you to log any
+			pseudo-variable (AVPs, parts of the request, parts of the reply, etc).
+			</p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm45201528269920"></a>1.2.2. Definitions and syntax</h3></div></div></div><p>
+			Selection of extra information is done via
+			<span class="emphasis"><em>extra_field</em></span> parameter by specifying tags
+			and log_names for the additional information. This information is
+			defined via acc_extra pseudovariable, referenced with the define
+			tag. If the tag is not specified, its value will be considered
+			to be the same as the log_value. Accounting backend(log, db, aaa, evi)
+			is specified at the beginning of the definition, separated by ':' from
+			the rest. The syntax of the parameter is:
+			</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="emphasis"><em>
+				backend : tag -&gt; log_name (';'tag -&gt; log_name)*
+				</em></span></p></li><li class="listitem"><p><span class="emphasis"><em>
+				backend : tag (';' tag)*
+				</em></span></p></li></ul></div><p>
+				Extra values are consistent during the whole call. Setting a
+			value during a request, will cause it to remain visible during all replies. Also,
+			concerning CDR logging, setting a value on the initial INVITIE will
+			result in having that value throughout the dialog.
+			</p><p>
+			Via <span class="emphasis"><em>log_name</em></span> you define how/where the
+			<span class="emphasis"><em>data</em></span> will be logged. Its meaning depends
+			of the accounting support which is used:
+			</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="emphasis"><em>LOG accounting</em></span> - log_name
+				will be just printed along with the data in <span class="emphasis"><em>
+				log_name=data</em></span> format;
+				</p></li><li class="listitem"><p><span class="emphasis"><em>DB accounting</em></span> - log_name
+				will be the name of the DB column where the data will be
+				stored.<span class="emphasis"><em>IMPORTANT</em></span>: add in db
+				<span class="emphasis"><em>acc</em></span> table the columns corresponding to
+				each extra data;
+				</p></li><li class="listitem"><p><span class="emphasis"><em>AAA accounting</em></span> -
+				log_name will be the AVP name used for packing the data into
+				AAA message. The log_name will be translated to AVP number
+				via the dictionary. <span class="emphasis"><em>IMPORTANT</em></span>: add in
+				AAA dictionary the <span class="emphasis"><em>log_name</em></span> attribute.
+				</p></li><li class="listitem"><p><span class="emphasis"><em>Events accounting</em></span> -
+				log_name will be the name of the parameter in the event raised.
+				</p></li></ul></div><p>
+			</p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm45201522895344"></a>1.2.3. How it works</h3></div></div></div><p>
+				Declaring an extra in the format of
+</p><pre class="programlisting">
+modparam("acc", "extra_fields", "log: a -&gt; test_a")
+</pre><p>
+				will enable you to set the value for <span class="emphasis"><em>test_a</em></span> field
+				of the log only by setting <span class="emphasis"><em>$acc_etra(a)</em></span> variable.
+				Otherwise, the field shall be logged with no value(null).
+			</p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm45201522892704"></a>1.2.4. Radius accounting dependencies</h3></div></div></div><p>
+				If radius accounting is used, except from a radius client library which is mandatory,
+				<span class="bold"><strong>dictionary.rfc2866</strong></span> must be included for the module
+				to work properly.</p></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="multi-call-legs"></a>1.3. Multi Call-Legs accounting</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="overview_multi_call_legs"></a>1.3.1. Overview</h3></div></div></div><p>
+			A SIP call can have multiple legs due forwarding actions. For
+			example user A calls user B which forwards the call to user C.
+			There is only one SIP call but with 2 legs ( A to B and B to C).
+			Accounting the legs of a call is required for proper billing of
+			the calls (if C is a PSTN number and the call is billed, user B
+			must pay for the call - as last party modifing the call
+			destination-, and not A - as initiator of the call. Call
+			forwarding on server is only one example which shows the
+			necessity of the having an accounting engine with multiple legs
+			support.
+			</p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm45201522886976"></a>1.3.2. Configuration</h3></div></div></div><p>
+				First how it works: The idea is to have a variable to store
+			a set of values for each leg. The meaning of
+			the variable content is stricly decided by the script writer - it can
+			be the origin and source of the leg, its status or any other
+			related information. By default there is defined only one leg. Script
+			writer has to decide when is the time to create a new leg, by using
+			<span class="emphasis"><em>acc_new_leg()</em></span> script function. When creating a new
+			leg, all the values for that leg will be set to NULL by default.
+			</p><p>
+			When the accounting information for the call will be written/sent,
+			all the call-leg pairs will be added.
+			</p><p>
+			By default, the multiple call-leg support is disabled - it can be
+			enabled just by setting <span class="emphasis"><em>acc_leg</em></span> variable
+			<code class="varname">leg_fields</code> module parameter. Note that
+			the last one only makes sense only for CDRs that are generated
+			automatically by OpenSIPS.
+			</p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm45201522883392"></a>1.3.3. Logged data</h3></div></div></div><p>
+				For each call, all the values from the <span class="emphasis"><em>acc_leg</em></span>
+				variable will be logged. How the information will be actually
+			logged, depends of the data backend:
+			</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="emphasis"><em>syslog</em></span> -- all leg-sets will be added
+				to one record string as acc_leg(leg1)=xxx, acc_leg(leg2)=xxxx ,... sets.
+				</p></li><li class="listitem"><p><span class="emphasis"><em>database</em></span> -- each pair will be
+				separately logged (due DB data structure constraints); several
+				records will be written, the difference between them being
+				only the fields corresponding to the call-leg info.
+				</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>You will need to add in your DB (all acc related
+				tables) the colums for call-leg info (a column for each leg value
+				of the set).
+				</p></div></li><li class="listitem"><p><span class="emphasis"><em>AAA</em></span> -- all sets will be added
+				to the same AAA accounting message as AAA AVPs - for each
+				call-leg a set of AAA AVPs will be added (corresponding
+				to the per-leg set)
+				</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3><p>You will need to add in your dictionary the
+				AAA AVPs used in call-leg set definition.
+				</p></div></li><li class="listitem"><p><span class="emphasis"><em>events</em></span> -- each pair will appear as a
+				different parameter-value pair in the event. Similar to the
+				database behavior, multiple events will be raised, and the only
+				difference between them is the leg information.
+				</p></li></ul></div><p>
+				<span class="emphasis"><em>Important!!!</em></span> In order to use <span class="emphasis"><em>RADIUS</em></span>,
+				one must include the AVPs which are located in
+				$(opensips_install_dir)/etc/dictionary.opensips, both in opensips radius config
+				script dictionary and radius server dictionary. Most important are the last three
+				AVPs (IDs : 227, 228, 229) which you won't find in any SIP dictionary
+				(at least at this moment) because they are only used in openSips.
+			</p></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="ACC-cdr-id"></a>1.4. CDRs accounting</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="overview_cdr_accounting"></a>1.4.1. Overview</h3></div></div></div><p>
+			ACC module can now also maintain session/dialog accounting. This
+			allows you to log useful information like call duration, call
+			start time and setup time.
+			</p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm45201522871824"></a>1.4.2. Configuration</h3></div></div></div><p>
+			In order to have CDRs accounting, first you need to set the
+			<span class="emphasis"><em>cdr</em></span> flag when calling
+			<a class="xref" href="#func_do_accounting" title="1.8.1.  do_accounting(type, flags, table)">do_accounting()</a> script function for the
+			initial INVITE of the dialog.
+			</p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm45201522869632"></a>1.4.3. How it works</h3></div></div></div><p>
+			This type of accounting is based on the dialog module. When
+			an initial INVITE is received, if the <span class="emphasis"><em>cdr</em></span>
+			flag is set, then the dialog creation time is saved. Once the call is
+			answered and the ACK is received, other information like extra values
+			or leg values are saved. When the corresponding BYE is received,
+			the call duration is computed and all information is stored to
+			the desired backend.
+			</p></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="dependencies"></a>1.5. Dependencies</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm45201522866720"></a>1.5.1. OpenSIPS Modules</h3></div></div></div><p>
+			The module depends on the following modules (in the other words
+			the listed modules must be loaded before this module):
+			</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="emphasis"><em>tm</em></span> -- Transaction Manager</p></li><li class="listitem"><p><span class="emphasis"><em>a database module</em></span> -- If SQL
+				support is used.</p></li><li class="listitem"><p><span class="emphasis"><em>rr</em></span> -- Record Route, if
+				<span class="quote">“<span class="quote">detect_direction</span>”</span> module parameter is enabled.
+				</p></li><li class="listitem"><p><span class="emphasis"><em>an aaa module</em></span></p></li><li class="listitem"><p><span class="emphasis"><em>dialog</em></span> -- Dialog, if
+				<span class="quote">“<span class="quote">cdr</span>”</span> option is used
+				</p></li></ul></div><p>
+			</p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="idm45201522859280"></a>1.5.2. External Libraries or Applications</h3></div></div></div><p>
+			The following libraries or applications must be installed
+			before running OpenSIPS with this module loaded:
+			</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+				none.
+				</p></li></ul></div></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="exported_parameters"></a>1.6. Exported Parameters</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_early_media"></a>1.6.1. <code class="varname">early_media</code> (integer)</h3></div></div></div><p>
+		Should be early media (any provisional reply with body) accounted too ?
+		</p><p>
+		Default value is 0 (no).
+		</p><div class="example"><a id="idm45201522853104"></a><p class="title"><strong>Example 1.1. early_media example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "early_media", 1)
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_report_cancels"></a>1.6.2. <code class="varname">report_cancels</code> (integer)</h3></div></div></div><p>
+		By default, CANCEL reporting is disabled -- most accounting
+		applications wants to see INVITE's cancellation status.
+		Turn on if you explicitly want to account CANCEL transactions.
+		</p><p>
+		Default value is 0 (no).
+		</p><div class="example"><a id="idm45201522849440"></a><p class="title"><strong>Example 1.2. report_cancels example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "report_cancels", 1)
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_detect_direction"></a>1.6.3. <code class="varname">detect_direction</code> (integer)</h3></div></div></div><p>
+		Controls the direction detection for sequential requests. If
+		enabled (non zero value), for sequential requests with upstream
+		direction (from callee to caller), the FROM and TO will be swapped
+		(the direction will be preserved as in the original request).
+		</p><p>
+		It affects all values related to TO and FROM headers (body, URI,
+		username, domain, TAG).
+		</p><p>
+		Default value is 0 (disabled).
+		</p><div class="example"><a id="idm45201522844992"></a><p class="title"><strong>Example 1.3. detect_direction example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "detect_direction", 1)
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_extra_fields"></a>1.6.4. <code class="varname">extra_fields</code> (string)</h3></div></div></div><p>
+		Defines the tag-log_value set to be used in extra fields accounting.
+		See <a class="xref" href="#ACC-extra-id" title="1.2. Extra accounting">Section 1.2, “Extra accounting”</a> for a
+		detailed description of the Extra accounting.
+		</p><p>
+		If empty, extra accounting support will be disabled.
+		</p><p>
+		Default value is 0 (disabled).
+		</p><div class="example"><a id="idm45201522840192"></a><p class="title"><strong>Example 1.4. Setting <span class="emphasis"><em>extra_fields</em></span> example:</strong></p><div class="example-contents"><pre class="programlisting">
+# for syslog-based accounting, use any text you want to be printed
+# if setting $acc_extra(a) you will see "My_a_Field=&lt;value&gt; in logs
+# if setting $acc_extra(b) you will see "b=&lt;value&gt; in logs
+modparam("acc", "extra_fields", "log: a-&gt;My_a_Field; b")
+# for mysql-based accounting, use the names of the columns
+# $acc_extra(a) = &lt;value&gt;  results in setting col_a with &lt;value&gt; in db
+modparam("acc", "extra_fields", "db: a-&gt;col_a; col_b")
+# for AAA-based accounting, use the names of the AAA AVPs
+modparam("acc", "extra_fields","aaa:a-&gt;AAA_SRC;b-&gt;AAA_DST")
+# evi definition example
+modparam("acc", "extra_fields","a-&gt;2345;b-&gt;2346")
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_leg_fields"></a>1.6.5. <code class="varname">leg_fields</code> (string)</h3></div></div></div><p>
+		Defines the tag-log_value set to be used in multi-leg accounting.
+		See <a class="xref" href="#multi-call-legs" title="1.3. Multi Call-Legs accounting">Section 1.3, “Multi Call-Legs accounting”</a> for a
+		detailed description of the Multi Call-Legs accounting.
+		</p><p>
+		If empty, multi-leg accounting support will be disabled.
+		</p><p>
+		Default value is 0 (disabled).
+		</p><div class="example"><a id="idm45201522834224"></a><p class="title"><strong>Example 1.5. Setting <span class="emphasis"><em>leg_fields</em></span> example:</strong></p><div class="example-contents"><pre class="programlisting">
+# for syslog-based accounting, use any text you want to be printed
+# if setting $(acc_leg(a)[0]) you will see "My_a_Field=&lt;value&gt; in logs
+# if setting $(acc_extra(b)[0]) you will see "b=&lt;value&gt; in logs
+modparam("acc", "leg_fields", "log: a-&gt;My_a_Field; b")
+# for mysql-based accounting, use the names of the columns
+# $acc_extra(a) = &lt;value&gt;  results in setting col_a with &lt;value&gt; in db
+modparam("acc", "leg_fields", "db: a-&gt;col_a; col_b")
+# for AAA-based accounting, use the names of the AAA AVPs
+modparam("acc", "leg_fields","aaa:a-&gt;AAA_LEG_SRC;b-&gt;AAA_LEG_DST")
+# evi definition example
+modparam("acc", "leg_fields","a-&gt;2345;b-&gt;2346")
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_log_level"></a>1.6.6. <code class="varname">log_level</code> (integer)</h3></div></div></div><p>
+		Log level at which accounting messages are issued to syslog.
+		</p><p>
+		Default value is L_NOTICE.
+		</p><div class="example"><a id="idm45201522829296"></a><p class="title"><strong>Example 1.6. log_level example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "log_level", 2)   # Set log_level to 2
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_log_facility"></a>1.6.7. <code class="varname">log_facility</code> (string)</h3></div></div></div><p>
+		Log facility to which accounting messages are issued to syslog.
+		This allows to easily seperate the accounting specific logging
+		from the other log messages.
+		</p><p>
+		Default value is LOG_DAEMON.
+		</p><div class="example"><a id="idm45201522825376"></a><p class="title"><strong>Example 1.7. log_facility example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "log_facility", "LOG_DAEMON")
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_aaa_url"></a>1.6.8. <code class="varname">aaa_url</code> (string)</h3></div></div></div><p>
+		This is the url representing the AAA protocol used and the location of the configuration file of this protocol.
+		</p><p>
+		If the parameter is set to empty string, the AAA accounting support
+		will be disabled.
+		</p><p>
+			Default value is <span class="quote">“<span class="quote">NULL</span>”</span>.
+		</p><div class="example"><a id="idm45201522820448"></a><p class="title"><strong>Example 1.8. Set <code class="varname">aaa_url</code> parameter</strong></p><div class="example-contents"><pre class="programlisting">
+...
+modparam("acc", "aaa_url", "radius:/etc/radiusclient-ng/radiusclient.conf")
+...
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_service_type"></a>1.6.9. <code class="varname">service_type</code> (integer)</h3></div></div></div><p>
+		AAA service type used for accounting.
+		</p><p>
+		Default value is not-set.
+		</p><div class="example"><a id="idm45201522816304"></a><p class="title"><strong>Example 1.9. service_type example</strong></p><div class="example-contents"><pre class="programlisting">
+# Default value of service type for SIP is 15
+modparam("acc", "service_type", 15)
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_db_table_acc"></a>1.6.10. <code class="varname">db_table_acc</code> (string)</h3></div></div></div><p>
+		Table name of accounting successfull calls -- database specific.
+		</p><p>
+		Default value is <span class="quote">“<span class="quote">acc</span>”</span>
+		</p><div class="example"><a id="idm45201522811824"></a><p class="title"><strong>Example 1.10. db_table_acc example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "db_table_acc", "myacc_table")
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_db_table_missed_calls"></a>1.6.11. <code class="varname">db_table_missed_calls</code> (string)</h3></div></div></div><p>
+		Table name for accounting missed calls -- database specific.
+		</p><p>
+		Default value is <span class="quote">“<span class="quote">missed_calls</span>”</span>
+		</p><div class="example"><a id="idm45201522807696"></a><p class="title"><strong>Example 1.11. db_table_missed_calls example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "db_table_missed_calls", "myMC_table")
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_db_url"></a>1.6.12. <code class="varname">db_url</code> (string)</h3></div></div></div><p>
+		SQL address -- database specific. If is set to NULL or empty string,
+		the SQL support is disabled.
+		</p><p>
+		Default value is <span class="quote">“<span class="quote">NULL</span>”</span> (SQL disabled).
+		</p><div class="example"><a id="idm45201522803440"></a><p class="title"><strong>Example 1.12. db_url example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "db_url", "mysql://user:password@localhost/opensips")
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_acc_method_column"></a>1.6.13. <code class="varname">acc_method_column</code> (string)</h3></div></div></div><p>
+		Column name in accounting table to store the request's method name as
+		string.
+		</p><p>
+		Default value is <span class="quote">“<span class="quote">method</span>”</span>.
+		</p><div class="example"><a id="idm45201522799216"></a><p class="title"><strong>Example 1.13. acc_method_column example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "acc_method_column", "method")
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_acc_from_tag_column"></a>1.6.14. <code class="varname">acc_from_tag_column</code> (string)</h3></div></div></div><p>
+		Column name in accounting table to store the From header TAG parameter.
+		</p><p>
+		Default value is <span class="quote">“<span class="quote">from_tag</span>”</span>.
+		</p><div class="example"><a id="idm45201522795072"></a><p class="title"><strong>Example 1.14. acc_from_tag_column example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "acc_from_tag_column", "from_tag")
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_acc_to_tag_column"></a>1.6.15. <code class="varname">acc_to_tag_column</code> (string)</h3></div></div></div><p>
+		Column name in accounting table to store the To header TAG parameter.
+		</p><p>
+		Default value is <span class="quote">“<span class="quote">to_tag</span>”</span>.
+		</p><div class="example"><a id="idm45201522790928"></a><p class="title"><strong>Example 1.15. acc_to_tag_column example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "acc_to_tag_column", "to_tag")
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_acc_callid_column"></a>1.6.16. <code class="varname">acc_callid_column</code> (string)</h3></div></div></div><p>
+		Column name in accounting table to store the request's Callid value.
+		</p><p>
+		Default value is <span class="quote">“<span class="quote">callid</span>”</span>.
+		</p><div class="example"><a id="idm45201522786784"></a><p class="title"><strong>Example 1.16. acc_callid_column example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "acc_callid_column", "callid")
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_acc_sip_code_column"></a>1.6.17. <code class="varname">acc_sip_code_column</code> (string)</h3></div></div></div><p>
+		Column name in accounting table to store the final reply's numeric code
+		value in string format.
+		</p><p>
+		Default value is <span class="quote">“<span class="quote">sip_code</span>”</span>.
+		</p><div class="example"><a id="idm45201522782624"></a><p class="title"><strong>Example 1.17. acc_sip_code_column example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "acc_sip_code_column", "sip_code")
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_acc_sip_reason_column"></a>1.6.18. <code class="varname">acc_sip_reason_column</code> (string)</h3></div></div></div><p>
+		Column name in accounting table to store the final reply's reason
+		phrase value.
+		</p><p>
+		Default value is <span class="quote">“<span class="quote">sip_reason</span>”</span>.
+		</p><div class="example"><a id="idm45201522778480"></a><p class="title"><strong>Example 1.18. acc_sip_reason_column example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "acc_sip_reason_column", "sip_reason")
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_acc_time_column"></a>1.6.19. <code class="varname">acc_time_column</code> (string)</h3></div></div></div><p>
+		Column name in accounting table to store the time stamp of the
+		transaction completion in date-time format.
+		</p><p>
+		Default value is <span class="quote">“<span class="quote">time</span>”</span>.
+		</p><div class="example"><a id="idm45201522774224"></a><p class="title"><strong>Example 1.19. acc_time_column example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "acc_time_column", "time")
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="param_acc_created_avp_name"></a>1.6.20. <code class="varname">acc_created_avp_name</code> (string)</h3></div></div></div><p>
+		The name of the openSips avp that will be used to hold the
+		time when the call was created. This time will only be logged on
+		missed calls.
+		</p><p>
+		Default value is "accX_created".
+		</p><div class="example"><a id="idm45201522770400"></a><p class="title"><strong>Example 1.20. acc_created_avp_name example</strong></p><div class="example-contents"><pre class="programlisting">
+modparam("acc", "acc_created_avp_name", "call_created_avp")
+</pre></div></div><br class="example-break" /></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="exported_pseudo_variables"></a>1.7. Exported Pseudo-Variables</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="pv_acc_extra"></a>1.7.1. $acc_extra(tag_name)</h3></div></div></div><p> This variable can addresed with the tag names defined
+			using <span class="emphasis"><em>extra_fields</em></span> parameter. If
+			<span class="emphasis"><em>do_accounting()</em></span> isn't called, this
+			variable is visible during the whole processing of one message,
+			enabling calling <span class="emphasis"><em>acc_XXX_request()</em></span>.
+			If <span class="emphasis"><em>do_accounting()</em></span> is called, the variable
+			will be visible from the first call of this function until the
+			actual accounting is being made.
+		</p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="pv_acc_leg"></a>1.7.2. $(acc_leg(tag_name)[leg_index])</h3></div></div></div><p> This variable can be addressed with the tag names defined
+			using <span class="emphasis"><em>leg_fields</em></span> parameter and  a valid
+			leg index( &lt;= <span class="emphasis"><em>acc_current_leg</em></span>).
+			This variable can't be used unless <span class="emphasis"><em>do_accounting()
+			</em></span> function is used. The variable also accepts negative
+			indexes, which start from -1(value for the last leg).
+		</p></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="pv_acc_current_leg"></a>1.7.3. $acc_current_leg (read-only)</h3></div></div></div><p> Variable holding the value for the current leg. Calling
+			<span class="emphasis"><em>acc_new_leg()</em></span> will increase the value
+			of this variable.
+		</p></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="exported_functions"></a>1.8. Exported Functions</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="func_do_accounting"></a>1.8.1. 
+			<code class="function">do_accounting(type, flags, table)</code>
+		</h3></div></div></div><p>
+			<code class="function">do_accounting()</code> replaces all the
+			*_flag and, *_missed_flag, cdr_flag, failed transaction_flag and the
+			db_table_avp modparams. Just call do_accounting(), select where and how you want
+			the accounting to take place, and the function will do all the work for you.
+		</p><p>
+		Meaning of the parameters is as follows:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="emphasis"><em>type</em></span> - the type of accounting you want to do.
+			All types have to be separated by '|'. The following parameters can
+			be used: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem"><p><span class="emphasis"><em>log</em></span> - syslog accounting;</p></li><li class="listitem"><p><span class="emphasis"><em>db</em></span> - database accounting;</p></li><li class="listitem"><p><span class="emphasis"><em>aaa</em></span> - aaa specific accounting;</p></li><li class="listitem"><p><span class="emphasis"><em>evi</em></span> - Event Interface accounting;</p></li></ul></div></li><li class="listitem"><p><span class="emphasis"><em>flags</em></span> - flags for the accounting type you have
+			selected. All the types have to be separated by '|'. The following
+			parameters can be used: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem"><p><span class="emphasis"><em>cdr</em></span> - enables dialog-level accounting.
+						OpenSIPS will internally detect dialog termination (generation/receipt
+						of a BYE request), and store the CDR as soon as the BYE request
+						is replied to. By enabling the "cdr" flag, the following additional
+						fields will be populated: duration, ms_duration, setuptime, created.
+						 (requires dialog module support)</p></li><li class="listitem"><p><span class="emphasis"><em>missed</em></span> - log missed calls; take care
+						that this flag will be deactivated after the first missed call;
+						you will have to reactivate it in the
+						<span class="emphasis"><em>failure_route</em></span> if you want to account
+						each destination that did not respond to the call;</p></li><li class="listitem"><p><span class="emphasis"><em>failed</em></span> -  flag which indicates if the
+						transaction should also be accounted in case
+						of failure (status&gt;=300);</p></li></ul></div></li><li class="listitem"><p><span class="emphasis"><em>table</em></span> - table where to do the accounting;
+			it replaces old table_avp parameter;</p></li></ul></div><p>
+			This function can be used from REQUEST_ROUTE, FAILURE_ROUTE,
+			BRANCH_ROUTE and LOCAL_ROUTE.
+		</p><div class="example"><a id="idm45201522741136"></a><p class="title"><strong>Example 1.21. do_accounting usage</strong></p><div class="example-contents"><pre class="programlisting">
+		...
+		if (!has_totag()) {
+			if (is_method("INVITE")) {
+			/* enable cdr and missed calls accounting in the database
+			 * and to syslog; db accounting shall be done in "my_acc" table */
+				do_accounting("db|log", "cdr|missed", "my_acc");
+			}
+		}
+		...
+		if (is_method("BYE")) {
+			/* do normal accounting via aaa */
+			do_accounting("aaa");
+		}
+		...
+		</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="func_drop_accounting"></a>1.8.2. 
+			<code class="function">drop_accounting([type], [flags])</code>
+		</h3></div></div></div><p>
+			<code class="function">drop_accounting()</code> resets flags
+			and types of accounting set with do_accounting(). If called with no
+			arguments all accounting will be stopped. If called with only one argument
+			all accounting for that type will be stopped. If called with two arguments
+			normal accounting will still be enabled.</p><p>
+		Meaning of the parameters is as follows:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="emphasis"><em>type</em></span> - the type of accounting you want to stop.
+			All the types have to be separated by '|'. The following parameters can
+			be used: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem"><p><span class="emphasis"><em>log</em></span> - stop syslog accounting;</p></li><li class="listitem"><p><span class="emphasis"><em>db</em></span> - stop database accounting;</p></li><li class="listitem"><p><span class="emphasis"><em>aaa</em></span> - stop aaa specific accounting;</p></li><li class="listitem"><p><span class="emphasis"><em>evi</em></span> - stop Event Interface accounting;</p></li></ul></div></li><li class="listitem"><p><span class="emphasis"><em>flags</em></span> - flags to be reset for the accouting type you have
+			selected. All the types have to be separated by '|'. The following
+			parameters can be used: </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem"><p><span class="emphasis"><em>cdr</em></span> - stop CDR accounting;</p></li><li class="listitem"><p><span class="emphasis"><em>missed</em></span> - stop logging missed calls;</p></li><li class="listitem"><p><span class="emphasis"><em>failed</em></span> -  stop failed transaction accounting;</p></li></ul></div></li></ul></div><p>
+			This function can be used from REQUEST_ROUTE, FAILURE_ROUTE,
+			BRANCH_ROUTE and LOCAL_ROUTE.
+		</p><div class="example"><a id="idm45201522724640"></a><p class="title"><strong>Example 1.22. drop_accounting usage</strong></p><div class="example-contents"><pre class="programlisting">
+		...
+		acc_log_request("403 Destination not allowed");
+		if (!has_totag()) {
+			if (is_method("INVITE")) {
+			/* enable cdr and missed calls accounting in the database
+			 * and to syslog; db accounting shall be done in "my_acc" table */
+				do_accounting("db|log", "cdr|missed", "my_acc");
+			}
+		}
+		...
+		/* later in your script */
+		if (...) { /* you don't want accounting anymore */
+			/* stop all syslog accounting */
+			drop_accounting("log");
+			/* or stop missed calls and cdr accounting for syslog;
+			 * normal accounting will still be enabled */
+			drop_accounting("log","missed|cdr");
+			/* or stop all types of accounting  */
+			drop_accounting();
+		}
+		...
+		</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="func_acc_log_request"></a>1.8.3. 
+			<code class="function">acc_log_request(comment)</code>
+		</h3></div></div></div><p>
+		<code class="function">acc_request</code> reports on a request,
+		for example, it can be used to report on missed calls to off-line users
+		who are replied 404 - Not Found. To avoid multiple reports on UDP
+		request retransmission, you would need to embed the
+		action in stateful processing.
+		</p><p>
+		Meaning of the parameters is as follows:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="emphasis"><em>comment</em></span> - Comment describing how the
+			request completed - this string has to contain a reply code
+			followed by a reply reason phrase (ex: "404 Nobody home"). Variables
+			are accepted in this string.</p></li></ul></div><p>
+			This function can be used from REQUEST_ROUTE, FAILURE_ROUTE,
+			BRANCH_ROUTE and LOCAL_ROUTE.
+		</p><div class="example"><a id="idm45201522717120"></a><p class="title"><strong>Example 1.23. acc_log_request usage</strong></p><div class="example-contents"><pre class="programlisting">
+...
+acc_log_request("403 Destination not allowed");
+...
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="func_acc_db_request"></a>1.8.4. 
+			<code class="function">acc_db_request(comment, table)</code>
+		</h3></div></div></div><p>
+		Like <code class="function">acc_log_request</code>,
+		<code class="function">acc_db_request</code> reports on a
+		request. The report is sent to database at <span class="quote">“<span class="quote">db_url</span>”</span>, in
+		the table referred to in the second action parameter.
+		</p><p>
+		Meaning of the parameters is as follows:
+		</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="emphasis"><em>comment</em></span> - Comment describing how the
+			request completed - this string has to contain a reply code
+			followed by a reply reason phrase (ex: "404 Nobody home"). Variables
+			are accepted in this string.</p></li><li class="listitem"><p><span class="emphasis"><em>table</em></span> - Database table to be used.</p></li></ul></div><p>
+			This function can be used from REQUEST_ROUTE, FAILURE_ROUTE,
+			BRANCH_ROUTE and LOCAL_ROUTE.
+		</p><div class="example"><a id="idm45201522708288"></a><p class="title"><strong>Example 1.24. acc_db_request usage</strong></p><div class="example-contents"><pre class="programlisting">
+...
+acc_db_request("Some comment", "Some table");
+acc_db_request("$T_reply_code $(&lt;reply&gt;rr)","acc");
+...
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="func_acc_aaa_request"></a>1.8.5. 
+			<code class="function">acc_aaa_request(comment)</code>
+		</h3></div></div></div><p>
+		Like <code class="function">acc_log_request</code>,
+		<code class="function">acc_aaa_request</code> reports on
+		a request. It reports to aaa server as configured in
+		<span class="quote">“<span class="quote">aaa_url</span>”</span>.
+		</p><p>
+		Meaning of the parameters is as follows:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="emphasis"><em>comment</em></span> - Comment describing how the
+			request completed - this string has to contain a reply code
+			followed by a reply reason phrase (ex: "404 Nobody home"). Variables
+			are accepted in this string.</p></li></ul></div><p>
+			This function can be used from REQUEST_ROUTE, FAILURE_ROUTE,
+			BRANCH_ROUTE and LOCAL_ROUTE.
+		</p><div class="example"><a id="idm45201522700448"></a><p class="title"><strong>Example 1.25. acc_aaa_request usage</strong></p><div class="example-contents"><pre class="programlisting">
+...
+acc_aaa_request("403 Destination not allowed");
+...
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="func_acc_evi_request"></a>1.8.6. 
+			<code class="function">acc_evi_request(comment)</code>
+		</h3></div></div></div><p>
+		Like <code class="function">acc_log_request</code>,
+		<code class="function">acc_evi_request</code> reports on a
+		request. The report is packed as an event sent through the OpenSIPS Event
+		Interface as <span class="emphasis"><em>E_ACC_EVENT</em></span> if the reply code is a
+		positive one (lower than 300), or <span class="emphasis"><em>E_ACC_MISSED_EVENT</em></span>
+		for negative or no codes. More information on this in
+		<a class="xref" href="#exported_events" title="1.10. Exported Events">Exported Events</a>.
+		</p><p>
+		Meaning of the parameters is as follows:
+		</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><span class="emphasis"><em>comment</em></span> - Comment describing how the
+			request completed - this string has to contain a reply code
+			followed by a reply reason phrase (ex: "404 Nobody home"). Variables
+			are accepted in this string.</p></li></ul></div><p>
+			This function can be used from REQUEST_ROUTE, FAILURE_ROUTE,
+			BRANCH_ROUTE and LOCAL_ROUTE.
+		</p><div class="example"><a id="idm45201522691536"></a><p class="title"><strong>Example 1.26. acc_evi_request usage</strong></p><div class="example-contents"><pre class="programlisting">
+...
+acc_evi_request("403 Destination not allowed");
+...
+</pre></div></div><br class="example-break" /></div></div><div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="func_acc_new_leg"></a>1.9. 
+			<code class="function">acc_new_leg()</code>
+		</h2></div></div></div><p>
+			Creates a new leg only if multi-leg accounting is used. The value of
+			<span class="emphasis"><em>acc_current_leg</em></span> variable is incremented. All the
+			values of the new leg will be initialised with null.
+		</p><p>
+			This function can be used from REQUEST_ROUTE, FAILURE_ROUTE,
+			BRANCH_ROUTE and LOCAL_ROUTE.
+		</p><div class="example"><a id="idm45201522686688"></a><p class="title"><strong>Example 1.27. acc_new_leg usage</strong></p><div class="example-contents"><pre class="programlisting">
+...
+	acc_new_leg();
+...
+</pre></div></div><br class="example-break" /></div><div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="exported_events"></a>1.10. Exported Events</h2></div></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="event_E_ACC_CDR"></a>1.10.1. 
+		<code class="function">E_ACC_CDR</code>
+		</h3></div></div></div><p>
+			The event raised when a CDR is generated. Note that this event will
+			only be triggered if the auto CDR accounting is used.
+		</p><p>Parameters:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+				<span class="emphasis"><em>method</em></span> - Request method name
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>from_tag</em></span> - From header tag parameter
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>to_tag</em></span> - To header tag parameter
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>callid</em></span> - Message Call-id
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>sip_code</em></span> - The status code from the final reply
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>sip_reason</em></span> - The status reason from the final reply
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>time</em></span> - The timestamp when the call was established
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>evi_extra*</em></span> - Extra parameters added by
+				the <span class="emphasis"><em>evi_extra</em></span> parameter.
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>evi_extra_bye*</em></span> - Extra parameters added by
+				the <span class="emphasis"><em>evi_extra_bye</em></span> parameter
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>multi_leg_info*</em></span> - Extra parameters added by
+				the <span class="emphasis"><em>multi_leg_info</em></span> parameter
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>multi_leg_bye_info*</em></span> - Extra parameters added by
+				the <span class="emphasis"><em>multi_leg_bye_info</em></span> parameter
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>duration</em></span> - The call duration in seconds
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>setuptime</em></span> - The call setup time in seconds
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>created</em></span> - The timestamp when the call was
+				created (the initial Invite was received)
+			</p></li></ul></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="event_E_ACC_EVENT"></a>1.10.2. 
+		<code class="function">E_ACC_EVENT</code>
+		</h3></div></div></div><p>
+			This event is triggered when old-style accounting is used. It is
+			generated when the requests (INVITE and BYE) transaction have
+			positive final replies, or by the <code class="function">acc_evi_request()</code>
+			function that has a positive reply code in comment.
+		</p><p>Parameters:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+				<span class="emphasis"><em>method</em></span> - Request method name
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>from_tag</em></span> - From header tag parameter
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>to_tag</em></span> - To header tag parameter
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>callid</em></span> - Message Call-id
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>sip_code</em></span> - The status code from the final reply
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>sip_reason</em></span> - The status reason from the final reply
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>time</em></span> - The timestamp when the transaction was created
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>evi_extra*</em></span> - Extra parameters added by
+				the <span class="emphasis"><em>evi_extra</em></span> parameter
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>multi_leg_info*</em></span> - Extra parameters added by
+				the <span class="emphasis"><em>multi_leg_info</em></span> parameter
+			</p></li></ul></div></div><div class="section"><div class="titlepage"><div><div><h3 class="title"><a id="event_E_ACC_MISSED_EVENT"></a>1.10.3. 
+		<code class="function">E_ACC_MISSED_EVENT</code>
+		</h3></div></div></div><p>
+			This event is triggered when old-style accounting is used. It is
+			generated when the requests (INVITE and BYE) transaction have
+			negative final replies, or by the <code class="function">acc_evi_request()</code>
+			function that has a negative reply code in comment.
+		</p><p>Parameters:</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+				<span class="emphasis"><em>method</em></span> - Request method name
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>from_tag</em></span> - From header tag parameter
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>to_tag</em></span> - To header tag parameter
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>callid</em></span> - Message Call-id
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>sip_code</em></span> - The status code from the final reply
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>sip_reason</em></span> - The status reason from the final reply
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>time</em></span> - The timestamp when the transaction was created
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>evi_extra*</em></span> - Extra parameters added by
+				the <span class="emphasis"><em>evi_extra</em></span> parameter
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>multi_leg_info*</em></span> - Extra parameters added by
+				the <span class="emphasis"><em>multi_leg_info</em></span> parameter
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>created</em></span> - Timestamp when the call was created
+			</p></li><li class="listitem"><p>
+				<span class="emphasis"><em>setuptime</em></span> - The call setup time in seconds
+			</p></li></ul></div></div></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="idm45201522372080"></a>Chapter 2. Frequently Asked Questions</h1></div></div></div><div class="qandaset"><a id="idm45201522385024"></a><table border="0" style="width: 100%;"><colgroup><col align="left" width="1%" /><col /></colgroup><tbody><tr class="question"><td align="left" valign="top"><a id="idm45201522384640"></a><a id="idm45201522384384"></a><p><strong>2.1.</strong></p></td><td align="left" valign="top"><p>What happened with old report_ack parameter</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>
+			The parameter is considered obsolete. It was removed as acc
+			module is doing SIP transaction based accouting and according
+			to SIP RFC, end2end ACKs are a different transaction (still part
+			of the same dialog). ACKs can be individually accouted as any
+			other sequential (in-dialog) request.
+		</p></td></tr>$
+	<tr class="question"><td align="left" valign="top"><a id="idm45201522382368"></a><a id="idm45201522382112"></a><p><strong>2.2.</strong></p></td><td align="left" valign="top"><p>What happened with old log_fmt parameter</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>
+			The parameter became obsolete with the restructure of the data
+			logged by ACC module (refer to the Overview chapter). For similar
+			behaviour you can use the extra accouting (see the corresponding
+			chapter).
+		</p></td></tr><tr class="question"><td align="left" valign="top"><a id="idm45201522337600"></a><a id="idm45201522337344"></a><p><strong>2.3.</strong></p></td><td align="left" valign="top"><p>What happened with old multi_leg_enabled parameter</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>
+			The parameter became obsolete by the addition of the new
+			multi_leg_info parameter. The multi-leg accouting is automatically
+			enabled when multi_leg_info is defined.
+			</p></td></tr><tr class="question"><td align="left" valign="top"><a id="idm45201522335488"></a><a id="idm45201522335232"></a><p><strong>2.4.</strong></p></td><td align="left" valign="top"><p>What happened with old src_leg_avp_id and dst_leg_avp_id
+				parameters</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>
+			The parameter was replaced by the more generic new parameter
+			multi_leg_info. This allows logging (per-leg) of more information
+			than just dst and src.
+			</p></td></tr><tr class="question"><td align="left" valign="top"><a id="idm45201522333392"></a><a id="idm45201522333136"></a><p><strong>2.5.</strong></p></td><td align="left" valign="top"><p>Where can I find more about OpenSIPS?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>
+			Take a look at <a class="ulink" href="http://www.opensips.org/" target="_top">http://www.opensips.org/</a>.
+		</p></td></tr><tr class="question"><td align="left" valign="top"><a id="idm45201522327936"></a><a id="idm45201522327680"></a><p><strong>2.6.</strong></p></td><td align="left" valign="top"><p>Where can I post a question about this module?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>
+			First at all check if your question was already answered on one of
+			our mailing lists: 
+		</p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>User Mailing List - <a class="ulink" href="http://lists.opensips.org/cgi-bin/mailman/listinfo/users" target="_top">http://lists.opensips.org/cgi-bin/mailman/listinfo/users</a></p></li><li class="listitem"><p>Developer Mailing List - <a class="ulink" href="http://lists.opensips.org/cgi-bin/mailman/listinfo/devel" target="_top">http://lists.opensips.org/cgi-bin/mailman/listinfo/devel</a></p></li></ul></div><p>
+			E-mails regarding any stable OpenSIPS release should be sent to 
+			<code class="email">&lt;<a class="email" href="mailto:users@lists.opensips.org">users@lists.opensips.org</a>&gt;</code> and e-mails regarding development versions
+			should be sent to <code class="email">&lt;<a class="email" href="mailto:devel@lists.opensips.org">devel@lists.opensips.org</a>&gt;</code>.
+		</p><p>
+			If you want to keep the mail private, send it to 
+			<code class="email">&lt;<a class="email" href="mailto:users@lists.opensips.org">users@lists.opensips.org</a>&gt;</code>.
+		</p></td></tr><tr class="question"><td align="left" valign="top"><a id="idm45201522319936"></a><a id="idm45201522319680"></a><p><strong>2.7.</strong></p></td><td align="left" valign="top"><p>How can I report a bug?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>
+			Please follow the guidelines provided at:
+			<a class="ulink" href="https://github.com/OpenSIPS/opensips/issues" target="_top">https://github.com/OpenSIPS/opensips/issues</a>.
+		</p></td></tr></tbody></table></div></div></div></body></html>
